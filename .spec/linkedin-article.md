@@ -1,8 +1,8 @@
-# 🚀 My Go Journey: Building a REST API from Scratch with Layered Architecture
+# 🚀 Learning Go in Practice: Building a REST API from Scratch with Layered Architecture
 
 ## 📚 Step 1: The Beginning - Why Go?
 
-As an experienced developer in other languages, I've always been curious about Go. Today I decided to dive deep! The goal? Build a complete REST API using Go community best practices.
+As a developer working with JS/TS, Go has caught my attention recently, especially since the new TS compiler is coming soon, promising 10x better performance than the current one. In this article/tutorial, we'll learn to build a complete REST API using Go community best practices. I'm in the process of learning this language, so the format will be milestone-based.
 
 ### 🎯 Project Objectives
 
@@ -14,22 +14,22 @@ As an experienced developer in other languages, I've always been curious about G
 
 ---
 
-## 📖 Step 1: Initial Setup and Go Modules
+## 📖 Environment: Initial Setup and Go Modules
 
-### 📝 First Learning: Go Modules
+### 📝 First Contact: Go Modules
 
 ```bash
 go mod init todo-api
 ```
 
-**What I learned:**
+**My first impressions:**
 
 - Go manages dependencies simply and efficiently
 - `go.mod` is like Node.js's `package.json`
 - `go.sum` ensures dependency integrity
-- **Go Modules are Go's official dependency management system** introduced in Go 1.11
-- They solve the "dependency hell" problem by versioning packages
-- Each module has a unique module path (like `todo-api`)
+- **Go Modules is Go's official dependency management system** introduced in version 1.11
+- Solves the "dependency hell" problem through package versioning
+- Each module has a unique path (like `todo-api`)
 - `go.mod` contains the module name and Go version
 - `go.sum` contains cryptographic checksums for security
 
@@ -41,13 +41,13 @@ go get modernc.org/sqlite          # Pure Go SQLite driver
 go get github.com/rs/cors           # CORS middleware
 ```
 
-**Why Gin?** I researched and discovered it's #1 in popularity in the Go community, ~40x faster than gorilla/mux, and used by companies like Uber and Didi.
+**Why Gin?** During my research I discovered it's #1 in popularity in the Go community, ~40x faster than gorilla/mux, and used by companies like Uber and Didi.
 
 ---
 
-## 🏗️ Step 2: Folder Structure - Go Conventions
+## 🏗️ Organization: Folder Structure - Go Conventions
 
-### 📁 Learning About Structure
+### 📁 Discovering Conventions
 
 The Go community has well-defined conventions:
 
@@ -72,15 +72,15 @@ todo-api/
 - `internal/` is for code that shouldn't be imported by other projects
 - `pkg/` is for reusable library code
 - `cmd/` contains the main application entry points
-- **Go's folder conventions are part of the language's philosophy** - they're not enforced by the compiler but are strong community standards
+- **Go folder conventions are part of the language philosophy** - not enforced by the compiler, but strong community patterns
 
 ---
 
-## 🗄️ Step 3: Database and SQLite
+## 🗄️ Persistence: Database and SQLite
 
-### 💡 First Contact with database/sql
+### 💡 Understanding database/sql
 
-Go has a very elegant standard database package:
+Go has a very elegant database package:
 
 ```go
 import "database/sql"
@@ -88,14 +88,14 @@ import "database/sql"
 db, err := sql.Open("sqlite", "data/todos.db")
 ```
 
-**Important learnings:**
+**What I discovered in this step:**
 
 - `database/sql` is an interface, not an implementation
 - Connection pooling is native: `SetMaxOpenConns(25)`
 - Prepared statements prevent SQL injection
 - **The database/sql package provides a universal interface** for SQL databases
-- It uses drivers (like `modernc.org/sqlite`) to implement specific database connections
-- Connection pooling is built-in and crucial for performance
+- Uses drivers (like `modernc.org/sqlite`) to implement specific connections
+- Connection pooling is native and crucial for performance
 - **Prepared statements** are cached and reused automatically
 
 ### 🔄 SQL Migrations
@@ -122,9 +122,9 @@ CREATE TRIGGER update_todos_updated_at
 
 ---
 
-## 🏛️ Step 4: Repository Pattern - Interface Implementation
+## 🏛️ Abstraction: Repository Pattern - Interface Implementation
 
-### 🎯 Implementing TodoRepository
+### 🎯 My First Pattern: TodoRepository
 
 ```go
 type TodoRepository interface {
@@ -136,13 +136,13 @@ type TodoRepository interface {
 }
 ```
 
-**Go learnings:**
+**My discoveries in this pattern:**
 
 - Interfaces are implicit - no need to say "implements"
 - `sql.NullString` for optional database fields
 - Error handling is explicit and mandatory
 - **Go interfaces are satisfied implicitly** - if a type has all methods of an interface, it implements it automatically
-- This enables loose coupling and easy testing
+- This allows loose coupling and easy testing
 - **sql.NullString** handles NULL database values gracefully
 - Go's error handling philosophy: "Errors are values"
 
@@ -166,14 +166,14 @@ func (r *todoRepository) GetAll() ([]models.Todo, error) {
 }
 ```
 
-**Key insights about Go interfaces:**
+**Insights I had about Go interfaces:**
 
 - **Implicit satisfaction**: No need to declare implementation
 - **Decoupling**: Interfaces define behavior, not implementation
 - **Testing**: Easy to create mock implementations
 - **Small interfaces**: Go favors interfaces with 1-2 methods
 
-### 🎯 Pointers in Go
+### 🔍 Pointers in Go
 
 ```go
 // Value receiver (copy)
@@ -187,7 +187,7 @@ func (r *todoRepository) GetAll() ([]models.Todo, error) {
 }
 ```
 
-**Learning about pointers:**
+**What I learned about pointers:**
 
 - **Value receivers**: Create copies, safer for small structs
 - **Pointer receivers**: Modify original, needed for large structs or when modifying state
@@ -195,7 +195,7 @@ func (r *todoRepository) GetAll() ([]models.Todo, error) {
 - **\* operator**: Dereference a pointer
 - **Go garbage collector**: Handles memory management automatically
 
-### 🔍 Go Error Handling
+### 🔍 Error Handling in Go
 
 ```go
 if err == sql.ErrNoRows {
@@ -204,15 +204,15 @@ if err == sql.ErrNoRows {
 return nil, fmt.Errorf("failed to query todo: %w", err)
 ```
 
-**Go error handling philosophy:**
+**The error handling philosophy Go adopts:**
 
 - **Errors are values**, not exceptions
 - **Explicit handling**: `if err != nil` becomes natural
 - **Multiple return values**: `(result, error)` pattern
 - **Error wrapping**: `%w` verb preserves original error
-- **Sentinel errors**: `sql.ErrNoRows`, `io.EOF`, etc.
+- **Error inspection**: `errors.Is()` and `errors.As()` for type checking
 
-### 🎯 Error Types in Go
+### 🔍 Error Types in Go
 
 ```go
 // Sentinel errors (predefined)
@@ -239,7 +239,7 @@ if errors.Is(err, ErrNotFound) {
 }
 ```
 
-**Error handling patterns learned:**
+**Error handling patterns I learned:**
 
 - **Sentinel errors**: For predictable error conditions
 - **Error types**: For structured error information
@@ -248,7 +248,7 @@ if errors.Is(err, ErrNotFound) {
 
 ---
 
-## 🧠 Step 5: Service Layer - Business Logic
+## 🧠 Business Logic: Service Layer - Validations and Rules
 
 ### ✨ Validations and Rules
 
@@ -435,6 +435,75 @@ r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 - **Automatic documentation**: Documentation stays always synchronized with code
 - **OpenAPI standard**: Uses OpenAPI standard, enabling integration with other tools
 - **Access at `/swagger/index.html`**: Accessible and professional interface
+
+---
+
+## 🎨 Step 8: API Documentation with Swagger
+
+### 📐 Adding Swagger Documentation
+
+I discovered that professional APIs need interactive documentation:
+
+```go
+// @title Todo API
+// @version 1.0
+// @description A complete REST API for managing todos using Go and Gin
+// @host localhost:8082
+// @BasePath /api/v1
+package main
+```
+
+**Swagger annotations in handlers:**
+
+```go
+// GetTodos retrieves all todos
+// @Summary Get all todos
+// @Description Retrieves a list of all todos from the database
+// @Tags todos
+// @Accept json
+// @Produce json
+// @Success 200 {array} models.Todo "List of todos"
+// @Failure 500 {object} object "Internal server error"
+// @Router /todos [get]
+func GetTodos(service services.TodoService) gin.HandlerFunc {
+    // implementation
+}
+```
+
+**Model annotations:**
+
+```go
+type Todo struct {
+    ID          int64     `json:"id" example:"1"`
+    Title       string    `json:"title" example:"Buy groceries"`
+    Description string    `json:"description,omitempty" example:"Milk, eggs, bread"`
+    Completed   bool      `json:"completed" example:"false"`
+    CreatedAt   time.Time `json:"created_at" example:"2026-02-16T09:00:00Z"`
+    UpdatedAt   time.Time `json:"updated_at" example:"2026-02-16T09:00:00Z"`
+}
+```
+
+**Learning about Swagger:**
+
+- **Code-first approach**: Generate docs from code annotations
+- **Interactive UI**: Test endpoints directly from browser
+- **Model mapping**: Automatic schema generation from structs
+- **API contracts**: Clear documentation for team collaboration
+
+### 🛠️ Setting up Swagger
+
+```bash
+# Install swag CLI
+go install github.com/swaggo/swag/cmd/swag@latest
+
+# Generate documentation
+swag init -g cmd/server/main.go
+
+# Add Swagger route
+r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+```
+
+**Result:** Interactive API documentation at `http://localhost:8082/swagger/index.html`
 
 ---
 

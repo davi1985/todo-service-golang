@@ -6,9 +6,10 @@ A clean and scalable REST API for managing TODO items built with Go and SQLite.
 
 - ✅ **REST API** with full CRUD operations
 - ✅ **SQLite Database** with migrations and indexes
-- ✅ **Clean Architecture** with separated layers
+- ✅ **Layered Architecture** with separated layers
 - ✅ **Input Validation** with business rules
 - ✅ **Standardized Responses** with proper HTTP status codes
+- ✅ **Swagger Documentation** with interactive API docs
 - ✅ **Graceful Shutdown** with signal handling
 - ✅ **Connection Pooling** for performance
 - ✅ **CORS Support** for web applications
@@ -21,17 +22,20 @@ A clean and scalable REST API for managing TODO items built with Go and SQLite.
 ## 🛠️ Installation
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/davi1985/todo-service-golang.git
 cd todo-service-golang
 ```
 
 2. Install dependencies:
+
 ```bash
 go mod download
 ```
 
 3. Run the application:
+
 ```bash
 go run cmd/server/main.go
 ```
@@ -40,7 +44,7 @@ The server will start on `http://localhost:8082`
 
 ## 🏗️ Architecture
 
-This project follows clean architecture principles with clear separation of concerns:
+This project follows layered architecture principles with clear separation of concerns:
 
 ```
 cmd/server/main.go              # Entry point (35 lines)
@@ -54,6 +58,7 @@ cmd/server/main.go              # Entry point (35 lines)
 │   └── services/               # Business logic
 ├── pkg/utils/                  # HTTP response utilities
 ├── migrations/                 # Database migrations
+├── docs/                       # Swagger documentation
 └── .spec/                      # Architecture documentation
 ```
 
@@ -64,18 +69,27 @@ cmd/server/main.go              # Entry point (35 lines)
 ## 📚 API Documentation
 
 ### Base URL
+
 ```
 http://localhost:8082/api/v1
+```
+
+### Interactive Swagger UI
+
+```
+http://localhost:8082/swagger/index.html
 ```
 
 ### Endpoints
 
 #### Get all TODOs
+
 ```http
 GET /api/v1/todos
 ```
 
 **Response:**
+
 ```json
 [
   {
@@ -90,11 +104,13 @@ GET /api/v1/todos
 ```
 
 #### Get TODO by ID
+
 ```http
 GET /api/v1/todos/{id}
 ```
 
 #### Create TODO
+
 ```http
 POST /api/v1/todos
 Content-Type: application/json
@@ -107,6 +123,7 @@ Content-Type: application/json
 ```
 
 #### Update TODO
+
 ```http
 PUT /api/v1/todos/{id}
 Content-Type: application/json
@@ -119,16 +136,19 @@ Content-Type: application/json
 ```
 
 #### Delete TODO
+
 ```http
 DELETE /api/v1/todos/{id}
 ```
 
 #### Health Check
+
 ```http
 GET /health
 ```
 
 **Response:**
+
 ```json
 {
   "status": "ok",
@@ -221,7 +241,7 @@ CREATE INDEX idx_todos_title ON todos(title);
 CREATE INDEX idx_todos_completed ON todos(completed);
 
 -- Trigger for automatic updated_at
-CREATE TRIGGER update_todos_updated_at 
+CREATE TRIGGER update_todos_updated_at
     AFTER UPDATE ON todos
     FOR EACH ROW
     BEGIN
