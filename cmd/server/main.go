@@ -1,3 +1,10 @@
+// @title           Todo API
+// @version         1.0
+// @description     A complete REST API for managing todos using Go and Gin
+// @contact.name    API Support
+// @host            localhost:8082
+// @BasePath        /api/v1
+// @schemes         http
 package main
 
 import (
@@ -6,6 +13,7 @@ import (
 	"os/signal"
 	"syscall"
 
+	_ "todo-api/docs"
 	"todo-api/internal/server"
 )
 

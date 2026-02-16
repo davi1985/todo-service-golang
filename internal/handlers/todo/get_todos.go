@@ -6,6 +6,15 @@ import (
 	"todo-api/pkg/utils"
 )
 
+// GetTodos retrieves all todos
+// @Summary Get all todos
+// @Description Retrieves a list of all todos from the database
+// @Tags todos
+// @Accept  json
+// @Produce json
+// @Success 200 {array} object "List of todos"
+// @Failure 500 {object} object "Internal server error"
+// @Router /todos [get]
 func GetTodos(service services.TodoService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		todos, err := service.GetAll()

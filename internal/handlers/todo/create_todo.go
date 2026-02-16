@@ -7,6 +7,17 @@ import (
 	"todo-api/pkg/utils"
 )
 
+// CreateTodo creates a new todo
+// @Summary Create a new todo
+// @Description Creates a new todo with the provided title and description
+// @Tags todos
+// @Accept  json
+// @Produce json
+// @Param todo body object true "Todo data"
+// @Success 201 {object} object "Todo created successfully"
+// @Failure 400 {object} object "Invalid request body or validation error"
+// @Failure 500 {object} object "Internal server error"
+// @Router /todos [post]
 func CreateTodo(service services.TodoService) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var todo models.Todo

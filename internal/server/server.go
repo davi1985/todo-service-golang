@@ -5,6 +5,8 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 	"todo-api/internal/config"
 	"todo-api/internal/database"
 	"todo-api/internal/handlers/todo"
@@ -70,6 +72,9 @@ func runMigrations(db *database.DB) error {
 }
 
 func setupRoutes(r *gin.Engine, service services.TodoService) {
+	// Swagger documentation
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	
 	api := r.Group("/api/v1")
 	{
 		todos := api.Group("/todos")
