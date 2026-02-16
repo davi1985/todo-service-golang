@@ -396,6 +396,46 @@ graph TB
 
 **New tool:** FigJam with Mermaid integration - interactive and shareable diagrams!
 
+### 📚 Interactive Documentation with Swagger
+
+As the API grew, it became clear that we needed to document the endpoints in a professional and accessible way. I integrated **Swagger** (OpenAPI) into the application:
+
+```bash
+go get -u github.com/swaggo/swag/cmd/swag
+go get -u github.com/swaggo/gin-swagger
+go get -u github.com/swaggo/files
+```
+
+**I added Swagger comments to the handlers:**
+
+```go
+// GetTodos retrieves all todos
+// @Summary Get all todos
+// @Description Retrieves a list of all todos from the database
+// @Tags todos
+// @Accept  json
+// @Produce json
+// @Success 200 {array} object "List of todos"
+// @Router /todos [get]
+func GetTodos(service services.TodoService) gin.HandlerFunc {
+    // ...
+}
+```
+
+**Configuration in the main route:**
+
+```go
+r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+```
+
+**Benefits I discovered:**
+
+- **Interactive interface**: API clients can explore all endpoints
+- **Direct testing**: Swagger UI allows making test requests
+- **Automatic documentation**: Documentation stays always synchronized with code
+- **OpenAPI standard**: Uses OpenAPI standard, enabling integration with other tools
+- **Access at `/swagger/index.html`**: Accessible and professional interface
+
 ---
 
 ## 📊 Step 9: Git and Versioning
