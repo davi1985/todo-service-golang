@@ -16,8 +16,8 @@ import (
 // @Accept  json
 // @Produce json
 // @Param id path int true "Todo ID"
-// @Param todo body object true "Updated todo data"
-// @Success 200 {object} object "Todo updated successfully"
+// @Param todo body models.Todo true "Updated todo data"
+// @Success 200 {object} models.Todo "Todo updated successfully"
 // @Failure 400 {object} object "Invalid ID format or request body"
 // @Failure 500 {object} object "Internal server error"
 // @Router /todos/{id} [put]

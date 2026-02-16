@@ -15,7 +15,7 @@ import (
 // @Accept  json
 // @Produce json
 // @Param id path int true "Todo ID"
-// @Success 200 {object} object "Todo deleted successfully"
+// @Success 200 {object} models.Todo "Todo deleted successfully"
 // @Failure 400 {object} object "Invalid ID format"
 // @Failure 404 {object} object "Todo not found"
 // @Router /todos/{id} [delete]

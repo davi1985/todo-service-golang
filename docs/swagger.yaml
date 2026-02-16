@@ -1,0 +1,179 @@
+basePath: /api/v1
+definitions:
+  models.Todo:
+    properties:
+      completed:
+        example: false
+        type: boolean
+      created_at:
+        example: "2026-02-16T09:00:00Z"
+        type: string
+      description:
+        example: Milk, eggs, bread
+        type: string
+      id:
+        example: 1
+        type: integer
+      title:
+        example: Buy groceries
+        maxLength: 100
+        minLength: 3
+        type: string
+      updated_at:
+        example: "2026-02-16T09:00:00Z"
+        type: string
+    required:
+    - title
+    type: object
+host: localhost:8082
+info:
+  contact:
+    name: API Support
+  description: A complete REST API for managing todos using Go and Gin
+  title: Todo API
+  version: "1.0"
+paths:
+  /todos:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a list of all todos from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of todos
+          schema:
+            items:
+              $ref: '#/definitions/models.Todo'
+            type: array
+        "500":
+          description: Internal server error
+          schema:
+            type: object
+      summary: Get all todos
+      tags:
+      - todos
+    post:
+      consumes:
+      - application/json
+      description: Creates a new todo with the provided title and description
+      parameters:
+      - description: Todo data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Todo created successfully
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid request body or validation error
+          schema:
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            type: object
+      summary: Create a new todo
+      tags:
+      - todos
+  /todos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes an existing todo by its ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo deleted successfully
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid ID format
+          schema:
+            type: object
+        "404":
+          description: Todo not found
+          schema:
+            type: object
+      summary: Delete a todo
+      tags:
+      - todos
+    get:
+      consumes:
+      - application/json
+      description: Retrieves a specific todo by its ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo details
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid ID format
+          schema:
+            type: object
+        "404":
+          description: Todo not found
+          schema:
+            type: object
+      summary: Get todo by ID
+      tags:
+      - todos
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing todo with the provided ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Updated todo data
+        in: body
+        name: todo
+        required: true
+        schema:
+          $ref: '#/definitions/models.Todo'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Todo updated successfully
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Invalid ID format or request body
+          schema:
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            type: object
+      summary: Update a todo
+      tags:
+      - todos
+schemes:
+- http
+swagger: "2.0"

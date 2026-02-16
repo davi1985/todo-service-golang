@@ -12,7 +12,7 @@ import (
 // @Tags todos
 // @Accept  json
 // @Produce json
-// @Success 200 {array} object "List of todos"
+// @Success 200 {array} models.Todo "List of todos"
 // @Failure 500 {object} object "Internal server error"
 // @Router /todos [get]
 func GetTodos(service services.TodoService) gin.HandlerFunc {

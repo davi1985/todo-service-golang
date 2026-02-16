@@ -13,8 +13,8 @@ import (
 // @Tags todos
 // @Accept  json
 // @Produce json
-// @Param todo body object true "Todo data"
-// @Success 201 {object} object "Todo created successfully"
+// @Param todo body models.Todo true "Todo data"
+// @Success 201 {object} models.Todo "Todo created successfully"
 // @Failure 400 {object} object "Invalid request body or validation error"
 // @Failure 500 {object} object "Internal server error"
 // @Router /todos [post]
